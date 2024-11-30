@@ -1,7 +1,6 @@
 package employee_controller
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	employee_dto "tasteplorer-internal-api/app/dto/employee"
@@ -24,7 +23,6 @@ func LoginEmployeeController(c *fiber.Ctx) error {
 	validationErrors := utils_validation.ValidateStruct(loginDto, customMessages)
 
 	if len(validationErrors) > 0 {
-		fmt.Println("eyoy: ", validationErrors)
 		var errorMessages []string
 		for _, message := range validationErrors {
 			errorMessages = append(errorMessages, message)

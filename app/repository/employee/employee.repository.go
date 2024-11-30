@@ -23,7 +23,6 @@ func CreateEmployee(employee *employee_model.Employee) error {
 	err := database.DB.QueryRow(context.Background(), sql,
 		employee.Fullname, employee.Email, employee.Password, employee.CreatedAt, employee.UpdatedAt).Scan(&employee.ID, &employee.Fullname, &employee.Email, &employee.CreatedAt, &employee.UpdatedAt)
 
-	fmt.Println("result: ", employee)
 	return err
 }
 

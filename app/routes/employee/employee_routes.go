@@ -2,8 +2,7 @@ package routes
 
 import (
 	employee_controller "tasteplorer-internal-api/app/controller"
-
-	jwt_middleware "tasteplorer-internal-api/app/middleware"
+	jwt_middleware "tasteplorer-internal-api/pkg/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )

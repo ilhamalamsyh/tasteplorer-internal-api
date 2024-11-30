@@ -2,7 +2,6 @@ package employee_service
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	employee_dto "tasteplorer-internal-api/app/dto/employee"
 	employee_model "tasteplorer-internal-api/app/model/employee"
@@ -55,7 +54,6 @@ func LoginService(loginDto *employee_dto.LoginRequest) (string, error) {
 		return "", errors.New("Invalid Credentials")
 	}
 
-	fmt.Println("employeeNya: ", employee)
 	// compare hashed password
 	err = bcrypt.CompareHashAndPassword([]byte(employee.Password), []byte(loginDto.Password))
 	if err != nil {

@@ -3,7 +3,7 @@ package jwt_middleware
 import (
 	"os"
 	"strings"
-	dto_custom_error "tasteplorer-internal-api/app/dto/errors"
+	response_dto "tasteplorer-internal-api/app/dto/response"
 	employee_service "tasteplorer-internal-api/app/service/employee"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,16 +11,18 @@ import (
 )
 
 func JWTMiddleware(c *fiber.Ctx) error {
-	var customeError dto_custom_error.CustomError
+	var responseDto response_dto.ResponseDto
 
 	// Get the token from the Authorization header
 	authHeader := c.Get("authorization")
 	if authHeader == "" {
-		customeError = dto_custom_error.CustomError{
+		responseDto = response_dto.ResponseDto{
 			Message: "Missing authorization token",
-			Code:    fiber.StatusBadRequest,
+			Code:    fiber.StatusUnauthorized,
+			Error:   "Missing authorization token",
+			Data:    nil,
 		}
-		return c.Status(fiber.StatusBadRequest).JSON(customeError)
+		return c.Status(fiber.StatusUnauthorized).JSON(responseDto)
 	}
 
 	// Split "Bearer <token>"
@@ -35,11 +37,13 @@ func JWTMiddleware(c *fiber.Ctx) error {
 		return secretKey, nil
 	})
 	if err != nil || !token.Valid {
-		customeError = dto_custom_error.CustomError{
+		responseDto = response_dto.ResponseDto{
 			Message: "Invalid or expired token",
-			Code:    fiber.StatusBadRequest,
+			Code:    fiber.StatusUnauthorized,
+			Error:   err,
+			Data:    nil,
 		}
-		return c.Status(fiber.StatusBadRequest).JSON(customeError)
+		return c.Status(fiber.StatusUnauthorized).JSON(responseDto)
 		// return fiber.NewError(fiber.StatusUnauthorized, "Invalid or expired token")
 	}
 

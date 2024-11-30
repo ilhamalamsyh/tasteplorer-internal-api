@@ -3,8 +3,8 @@ package employee_dto
 import "time"
 
 type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=8"`
 }
 
 type LoginResponse struct {
@@ -24,4 +24,13 @@ type RegisterDto struct {
 	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+func (LoginRequest) CustomMessagesValidationX() map[string]string {
+	return map[string]string{
+		"Email.required":    "The email field is required.",
+		"Email.email":       "The email field must be email format.",
+		"Password.required": "The password field is required.",
+		"Password.min":      "The password character must be greater than 8.",
+	}
 }

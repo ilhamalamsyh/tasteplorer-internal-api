@@ -238,7 +238,7 @@ func DeleteBannerContoller(c *fiber.Ctx) error {
 			Message: "Error when deleting banner",
 			Code:    fiber.StatusInternalServerError,
 			Error: fiber.Map{
-				"message": err,
+				"message": err.Error(),
 			},
 			Data: nil,
 		}

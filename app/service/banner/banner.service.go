@@ -106,7 +106,7 @@ func DeleteBannerService(id uint) error {
 	err := banner_repository.DeleteBanner(id)
 
 	if err != nil {
-		return err
+		return errors.New(err.Error())
 	}
 
 	return nil

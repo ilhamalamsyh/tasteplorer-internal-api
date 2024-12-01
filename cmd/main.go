@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	article_router "tasteplorer-internal-api/app/routes/article"
 	banner_router "tasteplorer-internal-api/app/routes/banner"
 	routes "tasteplorer-internal-api/app/routes/employee"
 	"tasteplorer-internal-api/platform/database"
@@ -30,6 +31,7 @@ func main() {
 	// Initialize Controllers
 	routes.SetupRoutes(app)
 	banner_router.SetupRoutes(app)
+	article_router.SetupRoutes(app)
 	// Start the server
 	log.Fatal(app.Listen(":5000"))
 

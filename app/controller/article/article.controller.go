@@ -1,23 +1,23 @@
-package banner_controller
+package article_controller
 
 import (
 	"log"
 	"math"
 	"strconv"
-	banner_dto "tasteplorer-internal-api/app/dto/banner"
+	article_dto "tasteplorer-internal-api/app/dto/article"
 	metadata_dto "tasteplorer-internal-api/app/dto/meta"
 	response_dto "tasteplorer-internal-api/app/dto/response"
-	banner_service "tasteplorer-internal-api/app/service/banner"
+	article_service "tasteplorer-internal-api/app/service/article"
 	utils_validation "tasteplorer-internal-api/pkg/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func CreateBannerController(c *fiber.Ctx) error {
-	var bannerRequestDto banner_dto.BannerRequestDto
+func CreateArticleController(c *fiber.Ctx) error {
+	var articleRequestDto article_dto.ArticleRequestDto
 	var responseDto response_dto.ResponseDto
 
-	if err := c.BodyParser(&bannerRequestDto); err != nil {
+	if err := c.BodyParser(&articleRequestDto); err != nil {
 		responseDto = response_dto.ResponseDto{
 			Message: "Invalid request payload",
 			Code:    fiber.StatusBadRequest,
@@ -29,8 +29,8 @@ func CreateBannerController(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(responseDto)
 	}
 
-	customMessages := bannerRequestDto.CustomMessagesValidation()
-	validationErrors := utils_validation.ValidateStruct(bannerRequestDto, customMessages)
+	customMessages := articleRequestDto.CustomMessagesValidation()
+	validationErrors := utils_validation.ValidateStruct(articleRequestDto, customMessages)
 	if len(validationErrors) > 0 {
 		var errorMessages []string
 		for _, message := range validationErrors {
@@ -49,12 +49,12 @@ func CreateBannerController(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(responseDto)
 	}
 
-	banner, err := banner_service.CreateBannerService(&bannerRequestDto)
+	article, err := article_service.CreateArticleService(&articleRequestDto)
 
 	if err != nil {
-		log.Printf("error creating new banner: %v", err)
+		log.Printf("error creating new article: %v", err)
 		responseDto = response_dto.ResponseDto{
-			Message: "Error when creating new banner",
+			Message: "Error when creating new article",
 			Code:    fiber.StatusBadRequest,
 			Error: fiber.Map{
 				"message": err,
@@ -65,15 +65,15 @@ func CreateBannerController(c *fiber.Ctx) error {
 	}
 
 	responseDto = response_dto.ResponseDto{
-		Message: "Success create new banner",
+		Message: "Success create new article",
 		Code:    fiber.StatusCreated,
 		Error:   nil,
-		Data:    banner,
+		Data:    article,
 	}
 	return c.Status(fiber.StatusCreated).JSON(responseDto)
 }
 
-func GetAllBannerController(c *fiber.Ctx) error {
+func GetAllArticleController(c *fiber.Ctx) error {
 	var responseDto response_dto.ResponseDto
 	var metaDataDto metadata_dto.MetaData
 
@@ -91,11 +91,11 @@ func GetAllBannerController(c *fiber.Ctx) error {
 		pageSizeInt = 1
 	}
 
-	banners, total, err := banner_service.FindAllBannerService(uint(pageInt), uint(pageSizeInt), search)
+	articles, total, err := article_service.FindAllArticleService(uint(pageInt), uint(pageSizeInt), search)
 	if err != nil {
-		log.Printf("error fetching banner list: %v", err)
+		log.Printf("error fetching article list: %v", err)
 		responseDto = response_dto.ResponseDto{
-			Message: "Error fetching banner list",
+			Message: "Error fetching article list",
 			Code:    fiber.StatusInternalServerError,
 			Error: fiber.Map{
 				"message": err,
@@ -119,15 +119,15 @@ func GetAllBannerController(c *fiber.Ctx) error {
 		Code:    fiber.StatusOK,
 		Error:   nil,
 		Data: fiber.Map{
-			"banners": banners,
-			"meta":    metaDataDto,
+			"articles": articles,
+			"meta":     metaDataDto,
 		},
 	}
 
 	return c.Status(fiber.StatusOK).JSON(responseDto)
 }
 
-func GetBannerDetailController(c *fiber.Ctx) error {
+func GetArticleDetailController(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var responseDto response_dto.ResponseDto
 
@@ -137,11 +137,11 @@ func GetBannerDetailController(c *fiber.Ctx) error {
 		return err
 	}
 
-	banner, err := banner_service.BannerDetailService(uint(idInt))
+	article, err := article_service.ArticleDetailService(uint(idInt))
 
-	if banner == nil {
+	if article == nil {
 		responseDto = response_dto.ResponseDto{
-			Message: "Banner not found",
+			Message: "Article not found",
 			Code:    fiber.StatusNotFound,
 			Error: fiber.Map{
 				"message": err,
@@ -153,9 +153,9 @@ func GetBannerDetailController(c *fiber.Ctx) error {
 	}
 
 	if err != nil {
-		log.Printf("Error get banner detail: %v", err)
+		log.Printf("Error get article detail: %v", err)
 		responseDto = response_dto.ResponseDto{
-			Message: "Error get banner detail",
+			Message: "Error get article detail",
 			Code:    fiber.StatusInternalServerError,
 			Error: fiber.Map{
 				"message": err,
@@ -170,14 +170,14 @@ func GetBannerDetailController(c *fiber.Ctx) error {
 		Message: "Sucess get banner detail",
 		Code:    fiber.StatusOK,
 		Error:   nil,
-		Data:    banner,
+		Data:    article,
 	}
 	return c.Status(fiber.StatusOK).JSON(responseDto)
 }
 
-func UpdateBannerController(c *fiber.Ctx) error {
+func UpdateArticleController(c *fiber.Ctx) error {
 	id := c.Params("id")
-	var bannerRequestDto banner_dto.BannerRequestDto
+	var articleRequestDto article_dto.ArticleRequestDto
 	var responseDto response_dto.ResponseDto
 
 	idInt, err := strconv.Atoi(id)
@@ -185,7 +185,7 @@ func UpdateBannerController(c *fiber.Ctx) error {
 		return err
 	}
 
-	if err := c.BodyParser(&bannerRequestDto); err != nil {
+	if err := c.BodyParser(&articleRequestDto); err != nil {
 		responseDto = response_dto.ResponseDto{
 			Message: "Invalid request payload",
 			Code:    fiber.StatusBadRequest,
@@ -197,12 +197,12 @@ func UpdateBannerController(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(responseDto)
 	}
 
-	banner, err := banner_service.UpdateBannerService(uint(idInt), &bannerRequestDto)
+	article, err := article_service.UpdateArticleService(uint(idInt), &articleRequestDto)
 
 	if err != nil {
-		log.Printf("Error when updating banner: %v", err)
+		log.Printf("Error when updating article: %v", err)
 		responseDto = response_dto.ResponseDto{
-			Message: "Error update banner",
+			Message: "Error update article",
 			Code:    fiber.StatusInternalServerError,
 			Error: fiber.Map{
 				"message": err,
@@ -213,15 +213,15 @@ func UpdateBannerController(c *fiber.Ctx) error {
 	}
 
 	responseDto = response_dto.ResponseDto{
-		Message: "Success update banner",
+		Message: "Success update article",
 		Code:    fiber.StatusOK,
 		Error:   nil,
-		Data:    banner,
+		Data:    article,
 	}
 	return c.Status(fiber.StatusOK).JSON(responseDto)
 }
 
-func DeleteBannerContoller(c *fiber.Ctx) error {
+func DeleteArticleContoller(c *fiber.Ctx) error {
 	var responseDto response_dto.ResponseDto
 	id := c.Params("id")
 
@@ -230,12 +230,12 @@ func DeleteBannerContoller(c *fiber.Ctx) error {
 		return err
 	}
 
-	err = banner_service.DeleteBannerService(uint(idInt))
+	err = article_service.DeleteArticleService(uint(idInt))
 
 	if err != nil {
-		log.Printf("Error when deleting banner: %v", err)
+		log.Printf("Error when deleting article: %v", err)
 		responseDto = response_dto.ResponseDto{
-			Message: "Error when deleting banner",
+			Message: "Error when deleting article",
 			Code:    fiber.StatusInternalServerError,
 			Error: fiber.Map{
 				"message": err.Error(),
@@ -246,7 +246,7 @@ func DeleteBannerContoller(c *fiber.Ctx) error {
 	}
 
 	responseDto = response_dto.ResponseDto{
-		Message: "Success delete banner",
+		Message: "Success delete article",
 		Code:    fiber.StatusOK,
 		Error:   nil,
 		Data:    nil,

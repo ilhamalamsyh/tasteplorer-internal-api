@@ -5,6 +5,7 @@ import (
 	article_router "tasteplorer-internal-api/app/routes/article"
 	banner_router "tasteplorer-internal-api/app/routes/banner"
 	routes "tasteplorer-internal-api/app/routes/employee"
+	upload_router "tasteplorer-internal-api/app/routes/upload"
 	"tasteplorer-internal-api/platform/database"
 
 	"github.com/gofiber/fiber/v2"
@@ -32,6 +33,8 @@ func main() {
 	routes.SetupRoutes(app)
 	banner_router.SetupRoutes(app)
 	article_router.SetupRoutes(app)
+	upload_router.SetupRoutes(app)
+
 	// Start the server
 	log.Fatal(app.Listen(":5000"))
 

@@ -48,24 +48,31 @@ func CreateEmployeeService(registerDto *employee_dto.RegisterDto) (*employee_dto
 	return employeeDto, nil
 }
 
-func LoginService(loginDto *employee_dto.LoginRequest) (string, error) {
+func LoginService(loginDto *employee_dto.LoginRequest) (string, *employee_dto.EmployeeDto, error) {
 	employee, err := employee_repository.GetUserByEmail(loginDto.Email)
 	if err != nil {
-		return "", errors.New("Invalid Credentials")
+		return "", nil, errors.New("Invalid Credentials")
 	}
 
 	// compare hashed password
 	err = bcrypt.CompareHashAndPassword([]byte(employee.Password), []byte(loginDto.Password))
 	if err != nil {
-		return "", errors.New("Invalid Credentials")
+		return "", nil, errors.New("Invalid Credentials")
 	}
 
 	token, err := generateJWT(employee)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 
-	return token, nil
+	employeeDto := &employee_dto.EmployeeDto{
+		ID:        employee.ID,
+		Fullname:  employee.Fullname,
+		Email:     employee.Email,
+		CreatedAt: employee.CreatedAt,
+		UpdatedAt: employee.UpdatedAt,
+	}
+	return token, employeeDto, nil
 }
 
 func EmployeeDetailService(id uint) (*employee_dto.EmployeeDto, error) {

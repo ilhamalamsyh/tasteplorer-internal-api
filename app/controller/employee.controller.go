@@ -40,7 +40,7 @@ func LoginEmployeeController(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(responseDto)
 	}
 
-	token, err := employee_service.LoginService(&loginDto)
+	token, employee, err := employee_service.LoginService(&loginDto)
 	if err != nil {
 		log.Printf("Error logging in employee: %v", err)
 		responseDto = response_dto.ResponseDto{
@@ -59,7 +59,8 @@ func LoginEmployeeController(c *fiber.Ctx) error {
 		Code:    fiber.StatusOK,
 		Error:   nil,
 		Data: fiber.Map{
-			"token": token,
+			"employee": employee,
+			"token":    token,
 		},
 	}
 

@@ -29,11 +29,13 @@ func main() {
 	// Enable CORS
 	app.Use(cors.New())
 
+	api := app.Group("/api")
+
 	// Initialize Controllers
-	routes.SetupRoutes(app)
-	banner_router.SetupRoutes(app)
-	article_router.SetupRoutes(app)
-	upload_router.SetupRoutes(app)
+	routes.SetupRoutes(api)
+	banner_router.SetupRoutes(api)
+	article_router.SetupRoutes(api)
+	upload_router.SetupRoutes(api)
 
 	// Start the server
 	log.Fatal(app.Listen(":5000"))

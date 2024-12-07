@@ -7,8 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupRoutes(app *fiber.App) {
-	banner := app.Group("/banners", jwt_middleware.JWTMiddleware)
+func SetupRoutes(router fiber.Router) {
+	banner := router.Group("/banners", jwt_middleware.JWTMiddleware)
 
 	banner.Get("/", banner_controller.GetAllBannerController)
 	banner.Get("/:id", banner_controller.GetBannerDetailController)

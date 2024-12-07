@@ -7,8 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupRoutes(app *fiber.App) {
-	upload := app.Group("/upload", jwt_middleware.JWTMiddleware)
+func SetupRoutes(router fiber.Router) {
+	upload := router.Group("/upload", jwt_middleware.JWTMiddleware)
 
 	upload.Post("/", upload_controller.UploadSingleFileController)
 

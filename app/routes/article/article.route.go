@@ -7,8 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupRoutes(app *fiber.App) {
-	article := app.Group("/articles", jwt_middleware.JWTMiddleware)
+func SetupRoutes(router fiber.Router) {
+	article := router.Group("/articles", jwt_middleware.JWTMiddleware)
 
 	article.Get("/", article_controller.GetAllArticleController)
 	article.Get("/:id", article_controller.GetArticleDetailController)

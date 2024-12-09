@@ -77,13 +77,13 @@ func GetAllArticleController(c *fiber.Ctx) error {
 	var responseDto response_dto.ResponseDto
 	var metaDataDto metadata_dto.MetaData
 
-	page := c.Query("page", "1")
+	page := c.Query("page", "0")
 	pageSize := c.Query("pageSize", "10")
 	search := c.Query("search", "")
 
 	pageInt, err := strconv.Atoi(page)
-	if err != nil || pageInt < 1 {
-		pageInt = 1
+	if err != nil || pageInt < 0 {
+		pageInt = 0
 	}
 
 	pageSizeInt, err := strconv.Atoi(pageSize)
@@ -144,7 +144,7 @@ func GetArticleDetailController(c *fiber.Ctx) error {
 			Message: "Article not found",
 			Code:    fiber.StatusNotFound,
 			Error: fiber.Map{
-				"message": err,
+				"message": "Article not found.	",
 			},
 			Data: nil,
 		}

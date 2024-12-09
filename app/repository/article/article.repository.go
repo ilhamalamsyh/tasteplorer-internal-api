@@ -44,7 +44,7 @@ func GetAllArticle(page uint, pageSize uint, searchKeyword string) ([]article_mo
 		FROM articles
 		WHERE title ILIKE $1
 		AND deleted_at IS NULL
-		ORDER BY created_at
+		ORDER BY created_at DESC
 		LIMIT $2 OFFSET $3
 	`
 

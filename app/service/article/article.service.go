@@ -34,7 +34,7 @@ func CreateArticleService(articleRequestDto *article_dto.ArticleRequestDto) (*ar
 }
 
 func FindAllArticleService(page uint, pageSize uint, search string) ([]article_dto.ArticleDto, int, error) {
-	offset := (page - 1) * pageSize
+	offset := pageSize * page
 
 	articles, total, err := article_repository.GetAllArticle(offset, pageSize, search)
 

@@ -32,7 +32,7 @@ func CreateBannerService(bannerRequestDto *banner_dto.BannerRequestDto) (*banner
 }
 
 func FindAllBannerService(page uint, pageSize uint, search string) ([]banner_dto.BannerDto, int, error) {
-	offset := (page - 1) * pageSize
+	offset := pageSize * page
 
 	banners, total, err := banner_repository.GetAllBanner(offset, pageSize, search)
 

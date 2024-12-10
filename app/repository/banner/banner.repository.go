@@ -44,7 +44,7 @@ func GetAllBanner(page uint, pageSize uint, searchKeyword string) ([]banner_mode
 		FROM banners
 		WHERE title ILIKE $1
 		AND deleted_at IS NULL
-		ORDER BY created_at
+		ORDER BY created_at DESC
 		LIMIT $2 OFFSET $3
 	`
 

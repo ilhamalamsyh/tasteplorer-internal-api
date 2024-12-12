@@ -52,9 +52,3 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	// Use Fiber's adaptor to serve the request
 	adaptor.FiberApp(app).ServeHTTP(w, r)
 }
-
-func main() {
-	// For local development
-	setupRoutes()
-	log.Fatal(app.Listen(":5000"))
-}

@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/aws/aws-lambda-go v1.47.0 // indirect
 	github.com/cloudinary/cloudinary-go/v2 v2.9.0 // indirect
 	github.com/creasty/defaults v1.8.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
@@ -25,6 +26,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/cloudinary/cloudinary-go v1.7.0
 	github.com/go-playground/validator/v10 v10.23.0
+	github.com/gofiber/adaptor/v2 v2.2.1
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.14.3 // indirect
@@ -42,6 +44,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.51.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
+	github.com/vercel/go-bridge v0.0.0-20221108222652-296f4c6bdb6d
 	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )

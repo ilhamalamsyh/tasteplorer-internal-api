@@ -44,12 +44,17 @@ func setupRoutes() {
 	upload_router.SetupRoutes(api)
 }
 
-// Vercel entry point
-func handler(w http.ResponseWriter, r *http.Request) {
+func handler() http.HandlerFunc {
 	// Ensure routes are set up
 	setupRoutes()
+
+	return adaptor.FiberApp(app)
+}
+
+// Vercel entry point
+func Handler(w http.ResponseWriter, r *http.Request) {
 	// This is needed to set the proper request path in `*fiber.Ctx`
 	r.RequestURI = r.URL.String()
 	// Use Fiber's adaptor to serve the request
-	adaptor.FiberApp(app).ServeHTTP(w, r)
+	handler().ServeHTTP(w, r)
 }

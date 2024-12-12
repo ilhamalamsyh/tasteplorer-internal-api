@@ -45,10 +45,11 @@ func setupRoutes() {
 }
 
 // Vercel entry point
-func Handler(w http.ResponseWriter, r *http.Request) {
+func handler(w http.ResponseWriter, r *http.Request) {
 	// Ensure routes are set up
 	setupRoutes()
-
+	// This is needed to set the proper request path in `*fiber.Ctx`
+	r.RequestURI = r.URL.String()
 	// Use Fiber's adaptor to serve the request
 	adaptor.FiberApp(app).ServeHTTP(w, r)
 }

@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"os"
 
 	article_router "tasteplorer-internal-api/app/routes/article"
 	banner_router "tasteplorer-internal-api/app/routes/banner"
@@ -18,8 +19,12 @@ import (
 
 // Initialize configurations and database connection
 func init() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+	if _, err := os.Stat(".env"); err == nil {
+		if err := godotenv.Load(); err != nil {
+			log.Fatalf("Error loading .env file: %v", err)
+		}
+	} else {
+		log.Println(".env file not found, using environment variables")
 	}
 
 	// Initialize database connection
